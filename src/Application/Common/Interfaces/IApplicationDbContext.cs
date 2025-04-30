@@ -8,4 +8,6 @@ public interface IApplicationDbContext
     DbSet<Customer> Customers { get; }
     DbSet<BankAccount> BankAccounts { get; }
     DbSet<Transaction> Transactions { get; }
+
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken);
 }

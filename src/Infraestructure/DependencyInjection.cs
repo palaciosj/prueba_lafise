@@ -1,3 +1,4 @@
+using Application.Common.Interfaces;
 using Infraestructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -16,5 +17,8 @@ public static class DependencyInjection
         { 
             options.UseSqlite(connectionString);
         });
+
+        builder.Services.AddScoped<IApplicationDbContext>(provider =>
+            provider.GetRequiredService<ApplicationDbContext>());
     }
 }

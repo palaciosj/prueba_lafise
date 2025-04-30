@@ -1,9 +1,15 @@
+using Application.Customers.Commands.CreateCustomer;
+using Application.Customers.Commands.DeleteCustomer;
+using Application.Customers.Commands.UpdateCustomer;
+using MediatR;
+using Microsoft.AspNetCore.Http.HttpResults;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.AddAplicationServices();
 builder.AddInfrastructureServices();
 
 var app = builder.Build();
@@ -16,30 +22,34 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
-var summaries = new[]
+app.MapPost("/customers", async (ISender sender, CreateCustomerCommand command) =>
 {
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+    var id = await sender.Send(command);
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
+    return TypedResults.Created("/Customers/{id}", id);
 })
-.WithName("GetWeatherForecast")
+.WithName("CreateCustomer")
+.WithOpenApi();
+
+app.MapDelete("/customers/{id:int}", async (ISender sender, int id) =>
+{
+    await sender.Send(new DeleteCustomerCommand(id));
+    return Results.NoContent();
+})
+.WithName("DeleteCustomer")
+.WithOpenApi();
+
+app.MapPatch("/customers/{id:int}", async (ISender sender, int id, UpdateCustomerCommand command) =>
+{
+    if (id != command.Id)
+    {
+        return Results.BadRequest("El ID de la ruta no coincide con el del cuerpo.");
+    }
+
+    var updatedId = await sender.Send(command);
+    return Results.Ok(updatedId);
+})
+.WithName("UpdateCustomer")
 .WithOpenApi();
 
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}

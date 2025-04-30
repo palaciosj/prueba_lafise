@@ -10,3 +10,4 @@ C:\Users\jpalacios\Desktop\code\lafise\prueba_lafise\src\Domain\obj\Debug\net8.0
 C:\Users\jpalacios\Desktop\code\lafise\prueba_lafise\src\Domain\obj\Debug\net8.0\refint\Domain.dll
 C:\Users\jpalacios\Desktop\code\lafise\prueba_lafise\src\Domain\obj\Debug\net8.0\Domain.pdb
 C:\Users\jpalacios\Desktop\code\lafise\prueba_lafise\src\Domain\obj\Debug\net8.0\ref\Domain.dll
+C:\Users\jpalacios\Desktop\code\lafise\prueba_lafise\src\Domain\obj\Debug\net8.0\Domain.csproj.AssemblyReference.cache

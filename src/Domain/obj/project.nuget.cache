@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "eI8LIKdYEM0=",
+  "dgSpecHash": "gK29JdRqo20=",
   "success": true,
   "projectFilePath": "C:\\Users\\jpalacios\\Desktop\\code\\lafise\\prueba_lafise\\src\\Domain\\Domain.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\jpalacios\\.nuget\\packages\\mediatr\\12.5.0\\mediatr.12.5.0.nupkg.sha512",
+    "C:\\Users\\jpalacios\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\jpalacios\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512"
+  ],
   "logs": []
 }
