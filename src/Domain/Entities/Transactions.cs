@@ -3,7 +3,7 @@ using Domain.Enums;
 
 namespace Domain.Entities;
 
-public abstract class Transaction: BaseAuditableEntity
+public class Transaction: BaseAuditableEntity
 {
     public double Amount { get; set; }
     public TransactionType Type { get; set; }
