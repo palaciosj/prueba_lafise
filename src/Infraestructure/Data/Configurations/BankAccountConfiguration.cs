@@ -10,5 +10,6 @@ public class BankAccountConfiguration : IEntityTypeConfiguration<BankAccount>
         builder.Property(property => property.AccountNumber).IsRequired();
         builder.Property(property => property.Balance).IsRequired();
         builder.HasOne(property => property.Customer).WithMany(customer => customer.BankAccounts).HasForeignKey(property => property.CustomerId).IsRequired();
+        builder.HasIndex(property => property.AccountNumber).IsUnique();
     }
 }

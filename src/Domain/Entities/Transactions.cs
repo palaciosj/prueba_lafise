@@ -8,5 +8,5 @@ public class Transaction: BaseAuditableEntity
     public double Amount { get; set; }
     public TransactionType Type { get; set; }
     public int BankAccountId { get; set; }
-    public required BankAccount BankAccount { get; set; }
+    public BankAccount? BankAccount { get; set; }
 }

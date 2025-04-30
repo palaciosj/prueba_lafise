@@ -1,6 +1,9 @@
 using Application.Customers.Commands.CreateCustomer;
 using Application.Customers.Commands.DeleteCustomer;
 using Application.Customers.Commands.UpdateCustomer;
+using Application.BankAccounts.Commands.CreateBankAccount;
+using Application.BankAccounts.Commands.DeleteBankAccount;
+using Application.Transactions.Commands.CreateTransaction;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -50,6 +53,30 @@ app.MapPatch("/customers/{id:int}", async (ISender sender, int id, UpdateCustome
     return Results.Ok(updatedId);
 })
 .WithName("UpdateCustomer")
+.WithOpenApi();
+
+app.MapPost("/bankaccounts", async (ISender sender, CreateBankAccountCommand command) =>
+{
+    var id = await sender.Send(command);
+    return TypedResults.Created($"/bankaccounts/{id}", id);
+})
+.WithName("CreateBankAccount")
+.WithOpenApi();
+
+app.MapDelete("/bankaccounts/{id:int}", async (ISender sender, int id) =>
+{
+    await sender.Send(new DeleteBankAccountCommand(id));
+    return Results.NoContent();
+})
+.WithName("DeleteBankAccount")
+.WithOpenApi();
+
+app.MapPost("/transactions", async (ISender sender, CreateTransactionCommand command) =>
+{
+    var id = await sender.Send(command);
+    return TypedResults.Created($"/transactions/{id}", id);
+})
+.WithName("CreateTransaction")
 .WithOpenApi();
 
 app.Run();

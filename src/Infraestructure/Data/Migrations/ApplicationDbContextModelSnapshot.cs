@@ -47,6 +47,9 @@ namespace Infraestructure.Data.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountNumber")
+                        .IsUnique();
+
                     b.HasIndex("CustomerId");
 
                     b.ToTable("BankAccounts");
