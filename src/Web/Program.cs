@@ -4,6 +4,7 @@ using Application.Customers.Commands.UpdateCustomer;
 using Application.BankAccounts.Commands.CreateBankAccount;
 using Application.BankAccounts.Commands.DeleteBankAccount;
 using Application.Transactions.Commands.CreateTransaction;
+using Application.BankAccounts.Queries.GetBalanceByNumber;
 using MediatR;
 using Microsoft.AspNetCore.Http.HttpResults;
 
@@ -77,6 +78,14 @@ app.MapPost("/transactions", async (ISender sender, CreateTransactionCommand com
     return TypedResults.Ok(result);
 })
 .WithName("CreateTransaction")
+.WithOpenApi();
+
+app.MapGet("/bankaccounts/balance", async (ISender sender, [AsParameters] GetBankAccountBalanceByNumberQuery query) =>
+{
+    var result = await sender.Send(query);
+    return Results.Ok(result);
+})
+.WithName("GetBankAccountBalanceByNumber")
 .WithOpenApi();
 
 app.Run();
