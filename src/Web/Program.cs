@@ -73,8 +73,8 @@ app.MapDelete("/bankaccounts/{id:int}", async (ISender sender, int id) =>
 
 app.MapPost("/transactions", async (ISender sender, CreateTransactionCommand command) =>
 {
-    var id = await sender.Send(command);
-    return TypedResults.Created($"/transactions/{id}", id);
+    var result = await sender.Send(command);
+    return TypedResults.Ok(result);
 })
 .WithName("CreateTransaction")
 .WithOpenApi();

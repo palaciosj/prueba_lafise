@@ -7,21 +7,26 @@ using MediatR;
 
 namespace Application.Transactions.Commands.CreateTransaction;
 
-public record CreateTransactionCommand : IRequest<int>
+public record CreateTransactionCommand : IRequest<CreateTransactionResultDto>
 {
     public double Amount { get; init; }
     public TransactionType Type { get; init; }
     public int BankAccountId { get; init; }
 }
 
-public class CreateTransactionCommandHandler(IApplicationDbContext _context) : IRequestHandler<CreateTransactionCommand, int>
+public class CreateTransactionCommandHandler(IApplicationDbContext _context) : IRequestHandler<CreateTransactionCommand, CreateTransactionResultDto>
 {
-    public async Task<int> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
+    public async Task<CreateTransactionResultDto> Handle(CreateTransactionCommand request, CancellationToken cancellationToken)
     {
         var account = await _context.BankAccounts
             .FindAsync(new object[] { request.BankAccountId }, cancellationToken);
 
         Guard.Against.NotFound(request.BankAccountId, account);
+
+        if (request.Type == TransactionType.Deposit)
+            account.Balance += request.Amount;
+        else if (request.Type == TransactionType.Withdraw)
+            account.Balance -= request.Amount;
 
         var transaction = new Transaction
         {
@@ -33,13 +38,10 @@ public class CreateTransactionCommandHandler(IApplicationDbContext _context) : I
         transaction.AddDomainEvent(new TransactionCreatedEvent(transaction));
         _context.Transactions.Add(transaction);
 
-        if (request.Type == TransactionType.Deposit)
-            account.Balance += request.Amount;
-        else if (request.Type == TransactionType.Withdraw)
-            account.Balance -= request.Amount;
-
         await _context.SaveChangesAsync(cancellationToken);
 
-        return transaction.Id;
+        return new CreateTransactionResultDto(transaction.Id, account.Balance);
     }
 }
+
+public record CreateTransactionResultDto(int TransactionId, double FinalBalance);
