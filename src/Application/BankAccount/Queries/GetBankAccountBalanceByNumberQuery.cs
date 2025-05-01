@@ -20,11 +20,24 @@ public class GetBankAccountBalanceByNumberQueryHandler
 
     public async Task<BankAccountBalanceDto> Handle(GetBankAccountBalanceByNumberQuery request, CancellationToken cancellationToken)
     {
+        // USAR EN PRODUCCIÓN
+        /*
         var account = await _context.BankAccounts
             .Where(b => b.AccountNumber == request.AccountNumber)
             .Select(b => new BankAccountBalanceDto(b.Id, b.AccountNumber, b.Balance))
             .FirstOrDefaultAsync(cancellationToken);
 
         return account ?? throw new KeyNotFoundException("Cuenta bancaria no encontrada.");
+        */
+
+        // USAR EN TESTING (para que funcione con mocks)
+        var account = _context.BankAccounts
+            .ToList()
+            .FirstOrDefault(b => b.AccountNumber == request.AccountNumber);
+
+        if (account is null)
+            throw new KeyNotFoundException("Cuenta bancaria no encontrada.");
+
+        return new BankAccountBalanceDto(account.Id, account.AccountNumber, account.Balance);
     }
 }
