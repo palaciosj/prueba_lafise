@@ -21,8 +21,7 @@ Este proyecto es una API construida en .NET 8 siguiendo principios de Clean Arch
 
 # Ejecutar pruebas unitarias
 ## Desde la raíz del proyecto (prueba_lafise):
-### Asegurarse de tener comentareadas las líneas que dicen 'USAR EN PRODUCCIÓN' para las pruebas unitarias y sin comentarios las que indican 
-### '// USAR EN TESTING (para que funcione con mocks)'
+### Asegurarse de tener comentareadas las líneas que dicen 'USAR EN PRODUCCIÓN' para las pruebas unitarias y sin comentarios las que indican '// USAR EN TESTING (para que funcione con mocks)'
 - dotnet test test/Application.Tests/Application.Tests.csproj -v n
 
 Esto ejecutará todas las pruebas del proyecto Application.Tests.
